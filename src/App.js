@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import Game from './tic-tac-toe/game.js'
+import Game from './tic-tac-toe/game.jsx'
 import './App.css';
 
 class App extends Component {

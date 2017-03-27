@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Square from './square.js';
+import Square from './square.jsx';
 
 class Board extends Component {
 

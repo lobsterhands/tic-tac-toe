@@ -20,7 +20,6 @@ class Game extends Component {
         const history = this.state.history;
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-
         const winner = calculateWinner(squares);
 
         if (winner || squares[i]) {
@@ -51,9 +50,8 @@ class Game extends Component {
         const history = this.state.history;
         const current = history[history.length - 1];
         const winner = calculateWinner(current.squares);
-        
-        let victorySquares = Array(3).fill(null);
 
+        let victorySquares = Array(3).fill(null);
         let status = "Next player: " + (this.state.xIsNext ? 'X' : 'O');
         if (winner) {
             status = "Winner: " + winner.character;
@@ -67,7 +65,7 @@ class Game extends Component {
                 <div className="status">
                     {status}
                     <div className="reset">
-                        {winner || this.state.history.length > 9 ? 
+                        {winner || this.state.history.length > 9 ?
                             <button onClick={() => this.resetState()}>
                                 Reset
                             </button> : null}
@@ -83,6 +81,9 @@ class Game extends Component {
     }
 }
 
+// Check the current board state against each possible victory condition
+// If a winner exists, return an object with two keys: 1. character (eg. 'X' or 'O')
+// and 2. squares (eg. [0, 1, 2])
 function calculateWinner(squares) {
     const lines = [
         [0, 1, 2],
@@ -93,12 +94,13 @@ function calculateWinner(squares) {
         [0, 3, 6],
         [1, 4, 7],
         [2, 5, 8]
-    ];    
+    ];
 
     for (var i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
 
         const winner = {character: squares[a], squares: lines[i]};
+
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
             return winner;
         }

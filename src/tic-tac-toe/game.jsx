@@ -20,7 +20,10 @@ class Game extends Component {
         const history = this.state.history;
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
+
+        const winner = calculateWinner(squares);
+
+        if (winner || squares[i]) {
             return;
         }
 
@@ -34,14 +37,27 @@ class Game extends Component {
         });
     }
 
+    resetState() {
+        const history = [{
+            squares: Array(9).fill(null)
+        }];
+        this.setState({
+            history: history,
+            xIsNext: true,
+        });
+    }
+
     render() {
         const history = this.state.history;
         const current = history[history.length - 1];
         const winner = calculateWinner(current.squares);
+        
+        let victorySquares = Array(3).fill(null);
 
         let status = "Next player: " + (this.state.xIsNext ? 'X' : 'O');
         if (winner) {
-            status = "Winner: " + winner;
+            status = "Winner: " + winner.character;
+            victorySquares = winner.squares;
         } else if (this.state.history.length > 9) {
             status = "Cat's game";
         }
@@ -50,8 +66,18 @@ class Game extends Component {
             <div className="Game">
                 <div className="status">
                     {status}
+                    <div className="reset">
+                        {winner || this.state.history.length > 9 ? 
+                            <button onClick={() => this.resetState()}>
+                                Reset
+                            </button> : null}
+                    </div>
                 </div>
-                <Board squares={current.squares} onClick={(i) => this.handleClick(i)}/>
+                <Board victorySquares={victorySquares} squares={current.squares}
+                    onClick={(i) => this.handleClick(i)}/>
+                <div className="history">
+                    <p>Fill me with history</p>
+                </div>
             </div>
         );
     }
@@ -72,14 +98,13 @@ function calculateWinner(squares) {
     for (var i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
 
-        const winner = squares[a];
-        if (winner && winner === squares[b] && winner === squares[c]) {
+        const winner = {character: squares[a], squares: lines[i]};
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
             return winner;
         }
     }
 
     return null;
 }
-
 
 export default Game;

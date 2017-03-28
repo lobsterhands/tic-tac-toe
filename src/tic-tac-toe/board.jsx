@@ -4,8 +4,10 @@ import Square from './square.jsx';
 class Board extends Component {
 
     renderSquare(i) {
+        const isHighlight = this.props.victorySquares.some(x => x === i);
+
         return (
-            <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)}/>
+            <Square highlight={isHighlight} value={this.props.squares[i]} onClick={() => this.props.onClick(i)}/>
         );
     }
 

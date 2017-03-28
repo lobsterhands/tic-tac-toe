@@ -20,7 +20,7 @@ class Game extends Component {
         const history = this.state.history;
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        if (squares[i]) {
+        if (calculateWinner(squares) || squares[i]) {
             return;
         }
 
@@ -37,7 +37,15 @@ class Game extends Component {
     render() {
         const history = this.state.history;
         const current = history[history.length - 1];
-        const status = "Next player: " + (this.state.xIsNext ? 'X' : 'O');
+        const winner = calculateWinner(current.squares);
+
+        let status = "Next player: " + (this.state.xIsNext ? 'X' : 'O');
+        if (winner) {
+            status = "Winner: " + winner;
+        } else if (this.state.history.length > 9) {
+            status = "Cat's game";
+        }
+
         return (
             <div className="Game">
                 <div className="status">
@@ -48,5 +56,30 @@ class Game extends Component {
         );
     }
 }
+
+function calculateWinner(squares) {
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8]
+    ];    
+
+    for (var i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+
+        const winner = squares[a];
+        if (winner && winner === squares[b] && winner === squares[c]) {
+            return winner;
+        }
+    }
+
+    return null;
+}
+
 
 export default Game;

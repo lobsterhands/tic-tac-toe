@@ -46,10 +46,28 @@ class Game extends Component {
         });
     }
 
+    jumpTo(move) {
+      console.log(move);
+    }
+
     render() {
         const history = this.state.history;
         const current = history[history.length - 1];
         const winner = calculateWinner(current.squares);
+
+        const moves = history.map((currentBoard, moveNum) => {
+          const description = moveNum ?
+            'Move #' + moveNum :
+            'Game start';
+
+          return (
+            <li>
+              <a href="#" onClick={() => this.jumpTo(moveNum)}>
+                {description}
+              </a>
+            </li>
+          );
+        });
 
         let victorySquares = Array(3).fill(null);
         let status = "Next player: " + (this.state.xIsNext ? 'X' : 'O');
@@ -75,6 +93,9 @@ class Game extends Component {
                     onClick={(i) => this.handleClick(i)}/>
                 <div className="history">
                     <p>Fill me with history</p>
+                    <ol>
+                      {moves}
+                    </ol>
                 </div>
             </div>
         );
